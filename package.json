@@ -1,0 +1,16 @@
+{
+  "name": "osmosend",
+  "version": "1.0.0",
+  "description": "osmosend",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@cosmostation/cosmosjs": "^0.11.2",
+    "chain-registry": "^1.0.0",
+    "osmojs": "^0.25.0"
+  }
+}
