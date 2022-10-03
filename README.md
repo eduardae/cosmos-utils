@@ -1,5 +1,5 @@
 # cosmos-utils
-Typescript utility for managing cosmos sending and osmosis swapping
+Bash script and Typescript utility for managing cosmos sending and osmosis swapping
 
 You have to set the appropriate addresses and seed phrase in the code (for reference, see [cosmosjs](https://github.com/cosmos/cosmjs) and [osmojs](https://github.com/osmosis-labs/osmojs))
 
