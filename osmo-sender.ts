@@ -1,15 +1,16 @@
 // @ts-nocheck
+import { FEES } from 'osmojs';
 
-import { FEE_VALUES } from 'osmojs';
 import { osmosis } from 'osmojs';
-import { coin } from '@cosmjs/amino';
-import { getOfflineSignerAmino as getOfflineSigner } from 'osmojs'
+//import { getOfflineSignerAmino as getOfflineSigner } from 'osmojs'
+import { getOfflineSignerProto as getOfflineSigner } from 'osmojs';
 import { chains } from 'chain-registry';
 import { getSigningOsmosisClient } from 'osmojs';
 import { cosmos } from 'osmojs';
 import { signAndBroadcast } from 'osmojs';
 import { MsgSend } from 'osmojs/types/codegen/cosmos/bank/v1beta1/tx';
 import { ibc } from 'osmojs';
+
 
 const {
     transfer
@@ -34,8 +35,9 @@ const {
 
 const mnemonic =
   'share flame stumble mutual ivory wool fun burden hill car van bid';
+const fee = FEES.osmosis.swapExactAmountIn('low');
+
 const chain = chains.find(({ chain_name }) => chain_name === 'osmosis');
-const fee = FEE_VALUES.osmosis.medium;
 
 const chainDto ={
   bech32_prefix: chain?.bech32_prefix,
@@ -45,7 +47,6 @@ const chainDto ={
 class OsmoSender {
 
   constructor() {
-
   }
 
   async signTransaction() {
@@ -58,24 +59,37 @@ class OsmoSender {
       
       
       const client = await getSigningOsmosisClient({
-        rpcEndpoint: 'https://osmosis-mainnet-rpc.allthatnode.com:26657',
+        rpcEndpoint: 'https://rpc.osmosis.zone',
         signer: signer
       });
       
+      /* TODO: sistemare 
       const msg = swapExactAmountIn({
         sender,
-        routes,
+        routes: ,
         tokenIn: coin(0.1, 'OSMO'),
-        tokenOutMinAmount: 
+        tokenOutMinAmount: 0
+      });
+      */
+
+      const msg = send({
+        typeUrl: 'uosmos',
+        value: {
+          fromAddress: 'osmo19k94t609ktcldx8umkhudh2t9z0drd08rtfy5p',
+          toAddress: 'osmo10rpv2hdmw5mta0akn9sg2uud45hhc5l76qzeft',
+          amount: {
+            denom: 'uosmos',
+            amount: '0.01'
+          } 
+        }
       });
       
-      
       const res = await signAndBroadcast({
-        client, client,
+        client: client,
         chainId: 'osmosis-1', // use 'osmo-test-4' for testnet
         address: 'osmo19k94t609ktcldx8umkhudh2t9z0drd08rtfy5p',
         msgs: [msg],
-        fee,
+        fee: fee,
         memo: ''
       });
   
